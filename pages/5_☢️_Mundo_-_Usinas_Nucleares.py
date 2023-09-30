@@ -30,7 +30,7 @@ gdf_usinas = gdf_usinas[gdf_usinas['grosspower'] != 0]
 
 
 # %%===========================================================================
-# !!! PAGE TITLE
+# !!! HEADER
 
 APP_TITLE = "Mapa das Usinas Nucleares ao Redor do Mundo"
 APP_SUBTITLE = """

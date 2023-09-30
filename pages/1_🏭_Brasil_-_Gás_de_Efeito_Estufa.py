@@ -5,12 +5,11 @@ Created on Thu Sep 14 15:50:50 2023
 @author: Josa -- josageof@gmail.com
 """
 
-import time
 import pandas as pd
 import streamlit as st
 import geopandas as gpd
 import leafmap.foliumap as leafmap
-# import pydeck as pdk
+from streamlit_echarts import st_echarts
 
 from utils.components import uf_centers
 from utils.components import sidebar_vspace, sidebar_click_rside
@@ -57,11 +56,14 @@ df.iloc[:,11:] = df.iloc[:,11:].fillna(0).astype(float)
 df["latitude"] = df["Estado"].map(lambda uf: uf_centers[uf][0])
 df["longitude"] = df["Estado"].map(lambda uf: uf_centers[uf][1])
 
+## Remove os dados de 1970 a 1989
+periodo_antigo = [str(ano) for ano in range(1970, 1990)]
+df = df.drop(periodo_antigo, axis=1)
 
 
 
 # %%===========================================================================
-# !!! PAGE TITLE
+# !!! HEADER
 
 st.set_page_config(
     layout="wide",
@@ -81,6 +83,7 @@ st.title(APP_TITLE)
 st.caption(APP_SUBTITLE)
 
 st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
+
 
 
 
@@ -157,92 +160,55 @@ with row1_col1:
     )
     
     m.to_streamlit(height=500)
-    
-    
-    # ## Cria uma camada geojson
-    # estados = pdk.Layer(
-    #     "GeoJsonLayer",
-    #     gdf_estados,
-    #     opacity=0.5,
-    #     # stroked=False,
-    #     filled=False,
-    #     extruded=False,
-    #     wireframe=False,
-    #     line_width_min_pixels=1,
-    #     get_line_color="[210, 180, 140]",
-    #     get_fill_color="[210, 180, 140]",
-    #     pickable=True,
-    # )
-    # ## Cria uma camada de heatmap
-    # heatmap = pdk.Layer(
-    #     "HeatmapLayer",
-    #     data=filtered_df,
-    #     get_position=["longitude", "latitude"],  # Colunas de latitude e longitude
-    #     opacity=0.9,  # Opacidade do heatmap
-    #     # aggregation=pdk.types.String("MEAN"),
-    #     threshold=0.5,  # Valor de threshold para o heatmap
-    #     get_weight='SUM',  # Coluna com intensidade do heatmap
-    #     pickable=True,
-    # )
-    # initial_view = pdk.ViewState(
-    #     latitude=-15, 
-    #     longitude=-55, 
-    #     zoom=3, 
-    #     max_zoom=16, 
-    #     pitch=0, 
-    #     bearing=0
-    # )
-    # m = pdk.Deck(
-    #     initial_view_state=initial_view,
-    #     map_style="mapbox://styles/mapbox/dark-v11",
-    #     layers=[estados, heatmap], 
-    #     tooltip={"text": """{name}
-    #              Toneladas de CO2e: {SUM}
-    #              """}
-    # )
-    # st.pydeck_chart(m, use_container_width=True)
 
 
 with row1_col2:
-    
-    colunas = ['Nível 1 - Setor'] + filtered_col
-    df_setores = filtered_df[colunas].groupby('Nível 1 - Setor', as_index=False).sum()
+    anos = [str(ano) for ano in range(1990, 2022)]
+    colunas = ['Nível 1 - Setor'] + anos
+    df_setores = df[colunas].groupby('Nível 1 - Setor', as_index=False).sum()
     df_setores = df_setores.set_index('Nível 1 - Setor').transpose()
-    df_setores.reset_index(inplace=True)
-    df_setores.rename(columns={'index':'Ano'}, inplace=True)
-    df_setores['Ano'] = df_setores['Ano'].astype(int)
-    # df_setores = df_setores.replace(0, "")
-    
-    progress_bar = st.progress(0)
-    status_text = st.empty()
-    
-    chart_data = df_setores[df_setores['Ano'] <= df_setores['Ano'][1]]
-    chart_data['Ano'] = chart_data['Ano'].astype(str)
-    chart = st.line_chart(chart_data.set_index('Ano'), height=450)
-    
-    
-    i = 0
-    di = 1 / len(df_setores['Ano'] - 1)
-    for ano in df_setores['Ano']:
-        status_text.text("%i%% Complete" % (i*100))
-        chart_data = df_setores[df_setores['Ano'] <= ano]
-        chart_data['Ano'] = chart_data['Ano'].astype(str)
-        chart.add_rows(chart_data.set_index('Ano'))
-        progress_bar.progress(i)
-        time.sleep(0.2)
-        i += di
-        
-    progress_bar.progress(100)
-    status_text.text("%i%% Complete" % (100))
-    # progress_bar.empty()
+    df_setores = df_setores[[
+        'Agropecuária',
+        'Energia',
+        'Resíduos',
+        'Processos Industriais',
+        'Mudança de Uso da Terra e Floresta',
+    ]]
+    # df_setores = df_setores.astype(int)
 
-    st.button("Re-run")
+    options = {
+        "title": {"text": "Agentes:"},
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {"type": "cross", "label": {"backgroundColor": "#6a7985"}},
+        },
+        "legend": {"data": df_setores.columns.to_list()},
+        "toolbox": {"feature": {"saveAsImage": {}}},
+        "grid": {"left": "3%", "right": "4%", "bottom": "3%", "containLabel": True},
+        "xAxis": [{"type": "category", "boundaryGap": False, "data": df_setores.index.to_list()}],
+        "yAxis": [{"type": "value"}],
+    
+        "series": [
+            {
+                "name": col,
+                "type": "line",
+                "stack": "Total",
+                "areaStyle": {},
+                "emphasis": {"focus": "series"},
+                "data": df_setores[col].to_list(),
+            } for col in df_setores.columns
+        ],
+    }
+
+    st_echarts(options=options, height="520px")
+
+    
 
 
 # %%===========================================================================
 #!!! FOOTER
 
-st.subheader("Metas do Brasil: 2025 e 2030")
+st.subheader("🦉 Metas do Brasil: 2025 e 2030")
 
 st.markdown(
 """

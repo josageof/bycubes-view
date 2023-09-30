@@ -71,7 +71,7 @@ gdf_op = pd.concat([gdf_op1, gdf_op2, gdf_op3], axis=0)
 
 
 # %%===========================================================================
-# !!! PAGE TITLE
+# !!! HEADER
 
 APP_TITLE = "Blocos Exploratórios Arrematados em Oferta Permanente pela ANP"
 APP_SUBTITLE = """    
@@ -213,7 +213,7 @@ st.pydeck_chart(m, use_container_width=True)
 # %%===========================================================================
 #!!! FOOTER
 
-st.subheader("A ANP já está realizando o 4º ciclo da Oferta Permanente")
+st.subheader("🦉 A ANP já está realizando o 4º ciclo da Oferta Permanente")
 
 st.markdown(
 """

@@ -31,7 +31,7 @@ gdf_cables['LENGTH'] = gdf_cables['LENGTH'].astype(float)
 
 
 # %%===========================================================================
-# !!! PAGE TITLE
+# !!! HEADER
 
 APP_TITLE = "Mapa Mundial de Cabos Submarinos de Fibra Óptica"
 APP_SUBTITLE = """
@@ -144,7 +144,7 @@ st.pydeck_chart(m, use_container_width=True)
 # %%===========================================================================
 #!!! FOOTER
 
-st.subheader("São mais de 550 cabos instalados ao redor do planeta")
+st.subheader("🦉 São mais de 550 cabos instalados ao redor do planeta")
 
 st.markdown(
 """

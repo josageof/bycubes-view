@@ -13,10 +13,10 @@ import streamlit as st
 
 st.set_page_config(
     page_title="byCubes View",
-    page_icon="👋",
+    page_icon="🎯",
 )
 
-st.sidebar.success("Clique acima e divirta-se!")
+st.sidebar.success("Clique acima 👆 e divirta-se!")
 
 
 st.sidebar.info(

@@ -38,7 +38,7 @@ df_pocos['longitude'] = df_pocos["LONG_DD"].astype(float)
 
 
 # %%===========================================================================
-# !!! PAGE TITLE
+# !!! HEADER
 
 APP_TITLE = "Poços de O&G cadastrados na ANP até 09/08/2023"
 APP_SUBTITLE = """
@@ -171,7 +171,7 @@ st.pydeck_chart(m, use_container_width=True)
 # %%===========================================================================
 #!!! FOOTER
 
-st.subheader("Distribuição dos poços por Bacia Sedimentar")
+st.subheader("🦉 Distribuição dos poços por Bacia Sedimentar")
 
 st.markdown(
 """
