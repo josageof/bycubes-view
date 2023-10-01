@@ -18,10 +18,6 @@ cligj==0.7.2
 colorama
 colour==0.1.5
 comm==0.1.4
-conda
-conda-content-trust
-conda-package-handling
-conda_package_streaming
 contourpy==1.1.1
 cryptography
 cycler==0.12.0
