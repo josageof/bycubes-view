@@ -6,9 +6,12 @@ Created on Thu Sep 21 21:45:33 2023
 """
 
 import streamlit as st
-from utils.components import page_config
+from utils.components import page_config, local_css
 
 page_config("centered")
+
+# Use local CSS
+local_css("style/style.css")
 
 
 # %%===========================================================================

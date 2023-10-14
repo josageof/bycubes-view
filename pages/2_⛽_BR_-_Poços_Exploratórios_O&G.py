@@ -10,7 +10,7 @@ import geopandas as gpd
 import streamlit as st
 import pydeck as pdk
 
-from utils.components import page_config, sidebar_vspace, sidebar_click_rside, map_rgb_from_col
+from utils.components import page_config, local_css, sidebar_vspace, sidebar_click_rside, map_rgb_from_col
 from utils.filters import st_selectbox_filter, st_checkbox_filter
 
 
@@ -64,6 +64,9 @@ APP_SUBTITLE = """
     """
 
 page_config("wide")
+
+# Use local CSS
+local_css("style/style.css")
 
 st.title(APP_TITLE)
 st.caption(APP_SUBTITLE)

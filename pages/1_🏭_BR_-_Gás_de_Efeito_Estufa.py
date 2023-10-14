@@ -11,7 +11,7 @@ import geopandas as gpd
 import leafmap.foliumap as leafmap
 from streamlit_echarts import st_echarts
 
-from utils.components import page_config, uf_centers
+from utils.components import page_config, local_css, uf_centers
 from utils.components import sidebar_vspace, sidebar_click_rside
 from utils.filters import st_selectbox_filter, st_slider_hfilter
 
@@ -67,8 +67,8 @@ df = df.drop(periodo_antigo, axis=1)
 
 page_config("wide")
 
-# with open('style.css') as f:
-#     css = f.read()
+# Use local CSS
+local_css("style/style.css")
 
 # st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
