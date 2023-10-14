@@ -1,0 +1,36 @@
+
+@keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.55)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+
+.stApp {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+}
+
+.stApp header {
+    background-color: transparent;
+}
+
+.logoApp {
+    background-image: url('https://media.canva.com/1/image-resize/1/80_80_100_PNG_F/czM6Ly9tZWRpYS1wcml2YXRlLmNhbnZhLmNvbS9rZmpYTS9NQUZ3c2JrZmpYTS8xL3AucG5n?osig=AAAAAAAAAAAAAAAAAAAAAAQL7wPoA-L1UtpA9gTrJt8kXGKM9IclcB1ihrtIdiZu&exp=1696803021&x-canva-quality=thumbnail_large&csig=AAAAAAAAAAAAAAAAAAAAADt7eHkwCTzDYOO6k2viMe4t72vpDBTrNzgm9WdEfQ8W');
+    background-repeat: no-repeat;
+    height: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    /* animation: move_wave 10s linear infinite; */
+}
